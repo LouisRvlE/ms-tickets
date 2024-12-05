@@ -26,4 +26,3 @@ curl http://localhost:5000/users/1/tickets
 ```bash
 curl http://localhost:5000/products/5/tickets
 ```
-# ms-tickets
