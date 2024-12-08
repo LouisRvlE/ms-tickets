@@ -80,18 +80,19 @@ def get_user_tickets(user_id):
 @app.route('/products/<int:product_id>/tickets', methods=['GET'])
 def get_product_tickets(product_id):
     print(f"Fetching tickets for product ID: {product_id}")
-    tickets = Ticket.query.filter(Ticket.product_ids.contains(product_id)).all()
+    tickets = Ticket.query.all()
     print(f"Found tickets: {tickets}")
     product_tickets = []
     for ticket in tickets:
-        ticket_dict = {
-            'id': ticket.id,
-            'user_id': ticket.user_id,
-            'product_ids': ticket.product_ids,
-            'date': ticket.date,
-            'total': ticket.total
-        }
-        product_tickets.append(ticket_dict)
+        if product_id in ticket.product_ids:
+            ticket_dict = {
+                'id': ticket.id,
+                'user_id': ticket.user_id,
+                'product_ids': ticket.product_ids,
+                'date': ticket.date,
+                'total': ticket.total
+            }
+            product_tickets.append(ticket_dict)
     return jsonify(product_tickets)
 
 if __name__ == '__main__':
