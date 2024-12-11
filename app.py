@@ -49,13 +49,34 @@ def get_ticket(ticket_id):
     if ticket is None:
         print(f"Ticket with ID {ticket_id} not found")
         return jsonify({'error': 'Ticket non trouvé'}), 404
+    try:
+        print(f"Fetching user for ticket ID: {ticket.user_id}")
+        print(f"http://home.louisrvl.fr:3002/users/{ticket.user_id}")
+        user = requests.get(f"http://home.louisrvl.fr:3002/users/{ticket.user_id}")
+        user = user.json()
+    except NameError:
+        print("Error, not found")
+        user = None
+    except:
+        print("Error, not found")
+        user = None
+
     ticket_dict = {
         'id': ticket.id,
         'user_id': ticket.user_id,
         'product_ids': ticket.product_ids,
         'date': ticket.date,
-        'total': ticket.total
+        'total': ticket.total,
+        'user': user,
+        'products': []
     }
+
+    for product_id in ticket.product_ids:
+        try: 
+            product = requests.get(f'http://home.louisrvl.fr:3004/products/{product_id}')
+            ticket_dict['products'].append(product.json())
+        except:
+            ticket_dict['products'].append(None)
 
     print(f"Found ticket: {ticket_dict}")
     return jsonify(ticket_dict)
