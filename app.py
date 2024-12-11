@@ -42,6 +42,22 @@ def create_ticket():
     print(f"Created ticket: {new_ticket}")
     return jsonify({'message': 'Ticket créé avec succès'}), 201
 
+@app.route('/tickets', methods=['GET'])
+def get_tickets():
+    tickets = Ticket.query.all()
+    print(f"Found tickets: {tickets}")
+    ticket_list = []
+    for ticket in tickets:
+        ticket_dict = {
+            'id': ticket.id,
+            'user_id': ticket.user_id,
+            'product_ids': ticket.product_ids,
+            'date': ticket.date,
+            'total': ticket.total
+        }
+        ticket_list.append(ticket_dict)
+    return jsonify(ticket_list)
+
 @app.route('/tickets/<int:ticket_id>', methods=['GET'])
 def get_ticket(ticket_id):
     print(f"Fetching ticket with ID: {ticket_id}")
