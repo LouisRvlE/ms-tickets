@@ -9,6 +9,12 @@ sudo docker run -it --name ms-tickets -e PORT=5000 -p 5000:5000 -d ms-tickets
 curl -X POST http://localhost:5000/tickets -H "Content-Type: application/json" -d '{ "user_id": 1, "product_id": 2, "date": "2024-12-05T15:47:00", "total": 99.99 }'
 ```
 
+**2. Get ticket list:**
+
+```bash
+curl http://localhost:5000/tickets
+```
+
 **2. Get a specific ticket:**
 
 ```bash
